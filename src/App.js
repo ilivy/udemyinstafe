@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
+import {Button, Modal, Input} from "@mui/material";
 import './App.css';
-import Post from './Post'
-import {Button, Modal, Input} from "@mui/material"
+import Post from './Post';
+import ImageUpload from './ImageUpload';
 
 const BASE_URL = 'http://localhost:8000/'
 
@@ -41,7 +42,7 @@ function App() {
     email
       ? window.localStorage.setItem('email', email)
       : window.localStorage.removeItem('email')
-  }, [authToken, authTokenType, userId])
+  }, [authToken, authTokenType, userId, username, email])
   
   useEffect(() => {
     fetch(BASE_URL + 'posts/all')
@@ -238,7 +239,10 @@ function App() {
           alt="Insta" />
           
         {authToken ? (
-          <Button onClick={() => signOut()}>Logout</Button>
+          <span>
+            <span className="app_header_username">Hey, {username}!</span>
+            <Button onClick={() => signOut()}>Logout</Button>
+          </span>
         ) : (
           <div>
             <Button onClick={() => setOpenSignIn(true)}>Login</Button>
@@ -254,10 +258,27 @@ function App() {
             <Post
               key={post.id}
               post={post}
+              authToken={authToken}
+              authTokenType={authTokenType}
+              username={username}
+              userId={userId}
             />
           ))
         }
       </div>
+              
+      {
+        authToken ? (
+          <ImageUpload
+            authToken={authToken}
+            authTokenType={authTokenType}
+            userId={userId}
+          />
+        ) : (
+          <h3>You need to log in to make a post</h3>
+        )
+      }
+              
     </div>
   );
 }

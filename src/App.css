@@ -28,6 +28,10 @@
   width: 60px;
 }
 
+.app_header_username {
+  padding-right: 10px;
+}
+
 .signin_modal {
   /*position: absolute;*/
   width: 400px;
